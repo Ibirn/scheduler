@@ -11,11 +11,10 @@ export default function InterviewerList(props) {
       <ul className="interviewers__list">
         {props.interviewers.map(person => 
           <InterviewerListItem 
-            id={person.id}
             key={person.id}
             avatar={person.avatar}
             name={person.name}
-            setInterviewer={props.setInterviewer}
+            setInterviewer={() => props.setInterviewer(person.id)}
             selected={props.interviewer === person.id}
           />
         )}
