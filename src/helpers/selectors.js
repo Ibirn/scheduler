@@ -1,13 +1,27 @@
-export default function getAppointmentsForDay (state, day) {
+function getAppointmentsForDay(state, day) {
   const output = [];
   for (const elem of state.days) {
-    if(elem.name === day){
+    if (elem.name === day) {
       for (const appt of elem.appointments) {
-        if(state.appointments[appt]){
-          output.push(state.appointments[appt])
-        }        
+        if (state.appointments[appt]) {
+          output.push(state.appointments[appt]);
+        }
       }
     }
   }
   return output;
 }
+
+function getInterview(state, interview) {
+  const output = {};
+  if (interview) {
+    output["student"] = interview.student;
+    output["interviewer"] = state.interviewers[interview.interviewer]
+  } else {
+    return null;
+  }
+  return output;
+}
+
+export default getAppointmentsForDay
+export { getInterview }
