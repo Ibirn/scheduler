@@ -1,4 +1,4 @@
-export function getAppointmentsForDay (state, day) {
+export default function getAppointmentsForDay (state, day) {
   const output = [];
   for (const elem of state.days) {
     if(elem.name === day){
