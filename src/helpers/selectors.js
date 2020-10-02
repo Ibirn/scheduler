@@ -24,11 +24,8 @@ function getInterview(state, interview) {
 }
 
 function getInterviewersForDay(state, day){
-  console.log("STATE: ", state)
-  console.log("DAY: ", day)
   const output = [];
   for (const elem of state.days) {
-    console.log("ELEM: ", elem)
     if (elem.name === day) {
       for (const appt of elem.interviewers) {
         if (state.interviewers[appt]) {
