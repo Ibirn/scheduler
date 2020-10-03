@@ -9,34 +9,33 @@ export default function useApplicationData() {
     appointments: {},
     interviewers: {},
   })
-  
+
   console.log("USEAPPSTATE: ", state)
   const setDay = day => setState({ ...state, day });
-  
+
   //Adds interview to database with axios
   function bookInterview(id, interview) {
     const appointment = { //captures and copies save function's interview object
-    ...state.appointments[id],
-    interview: { ...interview }
-  };
-  const appointments = {
-    ...state.appointments,
-    [id]: appointment
-  };
-
-  const newSpots = {
-    ...state.days[getDayIndex()],
-    spots:(state.days[getDayIndex()].spots - 1)
+      ...state.appointments[id],
+      interview: { ...interview }
+    };
+    const appointments = {
+      ...state.appointments,
+      [id]: appointment
+    };
+    const foundDay = state.days.find((day) => day.appointments.includes(id));
+    const days = state.days.map((day, index) => {
+      if (day.name === foundDay.name && state.appointments[id].interview === null) {
+        return { ...day, spots: day.spots - 1 };
+      } else {
+        return day;
+      }
+    });
+      return axios.put(`/api/appointments/${id}`, appointment).then(() => {
+      setState({ ...state, appointments, days })
+      })
   }
-  const days = [...state.days]
-  days.splice((getDayIndex()), 1, newSpots)
 
-   //sets state as was but with new appointments data
-  return axios.put(`/api/appointments/${id}`, appointment).then(() => {
-    setState({ ...state, appointments, days })
-  })
-  }
-  
   //Deletes interview in database with axios
   function cancelInterview(id) {
     const appointment = {
@@ -47,26 +46,17 @@ export default function useApplicationData() {
       ...state.appointments,
       [id]: appointment
     }
-    const newSpots = {
-      ...state.days[getDayIndex()],
-      spots:(state.days[getDayIndex()].spots + 1)
-    }
-    const days = [...state.days]
-    days.splice((getDayIndex()), 1, newSpots)
-    
-    return axios.delete(`/api/appointments/${id}`, appointment).then(() => {
-      setState({...state, days})
-    })
-  }
-  
-  const getDayIndex = () => {
-    let dayIndex;
-    state.days.filter((day) => {
-      if (day.name === state.day) {
-        dayIndex = day.id;
+    const foundDay = state.days.find((day) => day.appointments.includes(id));
+    const days = state.days.map((day, index) => {
+      if (day.name === foundDay.name) {
+        return { ...day, spots: day.spots + 1 };
+      } else {
+        return day;
       }
+    });
+    return axios.delete(`/api/appointments/${id}`, appointment).then(() => {
+      setState({ ...state, appointments, days })
     })
-    return dayIndex - 1
   }
 
   useEffect(() => {
