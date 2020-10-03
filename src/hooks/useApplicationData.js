@@ -1,29 +1,40 @@
-import React, { useEffect, useState} from 'react'
+import React, { useEffect, useState } from 'react'
 import axios from 'axios'
 
-export default function useApplicationData () {
+export default function useApplicationData() {
 
   const [state, setState] = useState({
     day: "Monday",
     days: [],
     appointments: {},
-    interviewers: {}
+    interviewers: {},
   })
   
+  console.log("USEAPPSTATE: ", state)
   const setDay = day => setState({ ...state, day });
   
   //Adds interview to database with axios
   function bookInterview(id, interview) {
     const appointment = { //captures and copies save function's interview object
-      ...state.appointments[id],
-      interview: { ...interview }
-    };
-    const appointments = {
-      ...state.appointments,
-      [id]: appointment
-    };
-    setState({ ...state, appointments }) //sets state as was but with new appointments data
-    return axios.put(`/api/appointments/${id}`, appointment)
+    ...state.appointments[id],
+    interview: { ...interview }
+  };
+  const appointments = {
+    ...state.appointments,
+    [id]: appointment
+  };
+
+  const newSpots = {
+    ...state.days[getDayIndex()],
+    spots:(state.days[getDayIndex()].spots - 1)
+  }
+  const days = [...state.days]
+  days.splice((getDayIndex()), 1, newSpots)
+
+   //sets state as was but with new appointments data
+  return axios.put(`/api/appointments/${id}`, appointment).then(() => {
+    setState({ ...state, appointments, days })
+  })
   }
   
   //Deletes interview in database with axios
@@ -36,9 +47,28 @@ export default function useApplicationData () {
       ...state.appointments,
       [id]: appointment
     }
-    return axios.delete(`/api/appointments/${id}`, appointment)
+    const newSpots = {
+      ...state.days[getDayIndex()],
+      spots:(state.days[getDayIndex()].spots + 1)
+    }
+    const days = [...state.days]
+    days.splice((getDayIndex()), 1, newSpots)
+    
+    return axios.delete(`/api/appointments/${id}`, appointment).then(() => {
+      setState({...state, days})
+    })
   }
   
+  const getDayIndex = () => {
+    let dayIndex;
+    state.days.filter((day) => {
+      if (day.name === state.day) {
+        dayIndex = day.id;
+      }
+    })
+    return dayIndex - 1
+  }
+
   useEffect(() => {
     const baseURL = "http://localhost:8001"
     const promOne = axios.get(`${baseURL}/api/days`)
@@ -50,7 +80,6 @@ export default function useApplicationData () {
       }
       )
   }, [])
-
 
   return { state, setDay, bookInterview, cancelInterview };
 }
