@@ -7,9 +7,11 @@ export default function useVisualMode(initMode) {
   const transition = (newMode, replace = false) => {
     if (replace) {  //if replace is true, change mode, don't add to history so that back calls the last time replace was not true.
       setMode(newMode)
+      setHistory(prev => [...prev])
     } else {
       setMode(newMode)
-      setHistory([...history, newMode]) //use spread because you want to copy everything that already exists in history AND newMode
+      setHistory(prev => [...prev, newMode]) 
+      //use spread because you want to copy everything that already exists in history AND newMode
     }
   }
 
