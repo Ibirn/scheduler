@@ -19,7 +19,6 @@ const ERROR_SAVING = "ERROR_SAVING";
 const ERROR_DELETING = "ERROR_DELETING";
 
 export default function Appointment(props) {
-  console.log("APPPROPS: ", props)
   const { mode, transition, back } = useVisualMode(
     props.interview ? SHOW : EMPTY
   );
