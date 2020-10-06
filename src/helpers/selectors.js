@@ -16,14 +16,14 @@ function getInterview(state, interview) {
   const output = {};
   if (interview) {
     output["student"] = interview.student;
-    output["interviewer"] = state.interviewers[interview.interviewer]
+    output["interviewer"] = state.interviewers[interview.interviewer];
   } else {
     return null;
   }
   return output;
 }
 
-function getInterviewersForDay(state, day){
+function getInterviewersForDay(state, day) {
   const output = [];
   for (const elem of state.days) {
     if (elem.name === day) {
@@ -37,5 +37,5 @@ function getInterviewersForDay(state, day){
   return output;
 }
 
-export default getAppointmentsForDay
-export { getInterview, getInterviewersForDay }
+export default getAppointmentsForDay;
+export { getInterview, getInterviewersForDay };
