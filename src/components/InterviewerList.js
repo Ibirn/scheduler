@@ -7,7 +7,6 @@ export default function InterviewerList(props) {
   InterviewerList.propTypes = {
     interviewers: PropTypes.array.isRequired,
   };
-  // console.log("PROPSINT: ", props.interviewers)
 
   return (
     <section className="interviewers">
