@@ -22,7 +22,7 @@ export default function Appointment(props) {
   const { mode, transition, back } = useVisualMode(
     props.interview ? SHOW : EMPTY
   );
-  
+
   //Captures name and interviewer from form and stores them as obj
   function save(name, interviewer) {
     const interview = {
@@ -56,7 +56,7 @@ export default function Appointment(props) {
   }
 
   return (
-    <article className="appointment">
+    <article className="appointment" data-testid="appointment">
       <Header time={props.time} />
       {mode === SHOW && (
         <Show
@@ -92,7 +92,7 @@ export default function Appointment(props) {
         <Error message="Could not delete." onClose={() => back()} />
       )}
       {mode === DELETE && <Status message="DELETING..." />}
-      {mode === SAVING && <Status message="SAVING ..." />}
+      {mode === SAVING && <Status message="SAVING..." />}
       {mode === EMPTY && <Empty onAdd={() => transition(CREATE)} />}
     </article>
   );
