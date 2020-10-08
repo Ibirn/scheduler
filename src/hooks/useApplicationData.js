@@ -14,7 +14,6 @@ export default function useApplicationData() {
   //Adds interview to database with axios
   function bookInterview(id, interview) {
     const appointment = {
-      //captures and copies save function's interview object
       ...state.appointments[id],
       interview: { ...interview },
     };
