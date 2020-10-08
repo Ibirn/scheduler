@@ -21,7 +21,12 @@ export default function Form(props) {
     if (name === "") {
       setError("The name cannot be left blank.");
       return;
-    } else {
+    } 
+    else if ( interviewer === null ) {
+      setError("An interviewer must be selected.");
+      return;
+    }
+     else {
       setError("");
       return props.onSave(name, interviewer);
     }
@@ -44,9 +49,6 @@ export default function Form(props) {
               }
             }}
             value={name}
-            /*
-            This must be a controlled component
-          */
           />
         </form>
         {error && (
