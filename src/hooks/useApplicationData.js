@@ -2,6 +2,8 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 
 export default function useApplicationData() {
+
+  //Sets empty default state
   const [state, setState] = useState({
     day: "Monday",
     days: [],
@@ -60,6 +62,7 @@ export default function useApplicationData() {
     });
   }
 
+  //Populates app with data from database
   useEffect(() => {
     const promOne = axios.get(`/api/days`);
     const promTwo = axios.get(`/api/appointments`);

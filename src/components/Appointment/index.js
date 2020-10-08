@@ -23,7 +23,7 @@ export default function Appointment(props) {
     props.interview ? SHOW : EMPTY
   );
 
-  //Captures name and interviewer from form and stores them as obj
+  //Captures name and interviewer from form and stores them as object
   function save(name, interviewer) {
     const interview = {
       student: name,
