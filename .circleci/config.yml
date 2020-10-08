@@ -19,21 +19,21 @@ jobs:
           key: v1-dependencies-{{ checksum "package.json" }}
       - run: npm test
 
-deploy:
-  machine:
-    enabled: true
+  deploy:
+    machine:
+      enabled: true
 
-  working_directory: ~/client
+    working_directory: ~/client
 
-  steps:
-    - add_ssh_keys:
-        fingerprints:
-          - "a3:93:b4:5d:58:21:a8:ba:34:c9:e6:7a:0e:cc:c8:af"
-    - checkout
-    - run:
-        name: Push Master to Production
-        command: |
-          git push https://github.com/Ibirn/scheduler.git master:production
+    steps:
+      - add_ssh_keys:
+          fingerprints:
+            - "a3:93:b4:5d:58:21:a8:ba:34:c9:e6:7a:0e:cc:c8:af"
+      - checkout
+      - run:
+          name: Push Master to Production
+          command: |
+            git push https://github.com/Ibirn/scheduler.git master:production
 
 workflows:
   version: 2
